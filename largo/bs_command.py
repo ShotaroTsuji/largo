@@ -1,4 +1,5 @@
 from cleo import Command
+from largo.project import Project
 
 
 class BsCommand(Command):
@@ -10,4 +11,5 @@ class BsCommand(Command):
     """
 
     def handle(self):
-        print(self.option('manifest-path'))
+        project = Project(manifest_path=self.option('manifest-path'))
+        print(project)
