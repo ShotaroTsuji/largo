@@ -1,5 +1,5 @@
 import pytest
-from largo.project import Project
+from largo.project import Project, StructureError
 
 
 def test_structure_check(shared_datadir):
@@ -7,5 +7,5 @@ def test_structure_check(shared_datadir):
 
 
 def test_structure_check_of_empty_dir(tmpdir):
-    with pytest.raises(Exception):
+    with pytest.raises(StructureError):
         Project(tmpdir / 'Largo.toml')
