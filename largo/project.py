@@ -1,3 +1,4 @@
+import toml
 from pathlib import Path
 
 
@@ -25,7 +26,10 @@ class Project:
     def __init__(self, manifest_path):
         self.manifest_path = Path(manifest_path)
         self.project_root = self.manifest_path.parent
+
         self.check_structure()
+
+        self.manifest = toml.load(self.manifest_path)
 
     def __str__(self):
         return f'Project {{ manifest_path: {self.manifest_path} }}'
