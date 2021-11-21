@@ -1,3 +1,4 @@
+import toml
 from pathlib import Path
 
 
@@ -17,6 +18,25 @@ class StructureError(Error):
         self.missing = missing
 
 
+class AccountName:
+    """Wrapper for account names dictionary"""
+
+    def __init__(self, account):
+        self.account = account
+
+    @property
+    def assets(self):
+        return self.account['assets']
+
+    @property
+    def liabilities(self):
+        return self.account['liabilities']
+
+    @property
+    def equity(self):
+        return self.account['equity']
+
+
 class Project:
     """
     Represents a ledger project
@@ -25,10 +45,17 @@ class Project:
     def __init__(self, manifest_path):
         self.manifest_path = Path(manifest_path)
         self.project_root = self.manifest_path.parent
+
         self.check_structure()
+
+        self.manifest = toml.load(self.manifest_path)
 
     def __str__(self):
         return f'Project {{ manifest_path: {self.manifest_path} }}'
+
+    @property
+    def account(self):
+        return AccountName(self.manifest['account'])
 
     def check_structure(self):
         """

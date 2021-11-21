@@ -1,0 +1,4 @@
+[account]
+assets = "資産"
+liabilities = "負債"
+equity = "純資産"
