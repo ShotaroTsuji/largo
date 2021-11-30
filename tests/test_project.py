@@ -1,5 +1,5 @@
 import pytest
-from largo.project import Project, StructureError
+from largo.project import Project, StructureError, MissingBookError
 
 
 def test_structure_check(shared_datadir):
@@ -25,3 +25,15 @@ def test_account_names(shared_datadir):
     project = Project(shared_datadir / 'empty-manifest' / 'Largo.toml')
     with pytest.raises(KeyError):
         project.account.assets
+
+
+def test_look_up_2021_book(shared_datadir):
+    project = Project(shared_datadir / 'simple-project' / 'Largo.toml')
+    want = shared_datadir / 'simple-project' / 'book' / '2021.ledger'
+    assert project.book(2021) == want
+
+
+def test_look_up_missing_book(shared_datadir):
+    project = Project(shared_datadir / 'simple-project' / 'Largo.toml')
+    with pytest.raises(MissingBookError):
+        project.book(1900)

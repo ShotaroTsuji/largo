@@ -18,6 +18,17 @@ class StructureError(Error):
         self.missing = missing
 
 
+class MissingBookError(Error):
+    """Exception raised when the specified book is missing.
+
+    Attributes:
+        path -- missing book
+    """
+
+    def __init__(self, path):
+        self.path = path
+
+
 class AccountName:
     """Wrapper for account names dictionary"""
 
@@ -74,3 +85,12 @@ class Project:
             raise StructureError(missing)
         else:
             return True
+
+    def book(self, year):
+        """Returns the ledger book of the specified year"""
+        book_path = self.project_root / 'book' / f'{year}.ledger'
+
+        if not book_path.exists():
+            raise MissingBookError(book_path)
+
+        return book_path
