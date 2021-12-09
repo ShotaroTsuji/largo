@@ -65,6 +65,10 @@ class Project:
         return f'Project {{ manifest_path: {self.manifest_path} }}'
 
     @property
+    def ledger_bin(self):
+        return 'ledger'
+
+    @property
     def account(self):
         return AccountName(self.manifest['account'])
 
