@@ -13,10 +13,15 @@ class BsCommand(Command):
     Show balance sheet
 
     bs
+        {year? : The year of the balance sheet}
         {--manifest-path=Largo.toml : The path to a manifest file}
     """
 
     def handle(self):
         project = Project(manifest_path=self.option('manifest-path'))
         bs = BalanceSheet(project)
-        bs.build(current_year())
+        year = self.argument('year')
+        if year:
+            bs.build(int(year))
+        else:
+            bs.build(current_year())
