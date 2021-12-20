@@ -29,7 +29,7 @@ class MissingBookError(Error):
         self.path = path
 
 
-class AccountName:
+class Account:
     """Wrapper for account names dictionary"""
 
     def __init__(self, account):
@@ -70,7 +70,7 @@ class Project:
 
     @property
     def account(self):
-        return AccountName(self.manifest['account'])
+        return Account(self.manifest['account'])
 
     def check_structure(self):
         """
