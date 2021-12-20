@@ -1,5 +1,6 @@
 import toml
 from pathlib import Path
+from dataclasses import dataclass
 
 
 class Error(Exception):
@@ -29,23 +30,12 @@ class MissingBookError(Error):
         self.path = path
 
 
-class AccountName:
+@dataclass
+class Account:
     """Wrapper for account names dictionary"""
-
-    def __init__(self, account):
-        self.account = account
-
-    @property
-    def assets(self):
-        return self.account['assets']
-
-    @property
-    def liabilities(self):
-        return self.account['liabilities']
-
-    @property
-    def equity(self):
-        return self.account['equity']
+    assets: str
+    liabilities: str
+    equity: str
 
 
 class Project:
@@ -70,7 +60,7 @@ class Project:
 
     @property
     def account(self):
-        return AccountName(self.manifest['account'])
+        return Account(**self.manifest['account'])
 
     def check_structure(self):
         """
