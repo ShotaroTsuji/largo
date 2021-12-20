@@ -1,5 +1,11 @@
 from cleo import Command
 from largo.project import Project
+from largo.balance_sheet import BalanceSheet
+import datetime
+
+
+def current_year():
+    return datetime.date.today().year
 
 
 class BsCommand(Command):
@@ -12,4 +18,5 @@ class BsCommand(Command):
 
     def handle(self):
         project = Project(manifest_path=self.option('manifest-path'))
-        print(project)
+        bs = BalanceSheet(project)
+        bs.build(current_year())
