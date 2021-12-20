@@ -23,8 +23,8 @@ def test_bs_command_arguments(simple_project, japanese_manifest):
 def test_build_balance_sheet(simple_project, japanese_manifest):
     project = Project(simple_project)
     bs = BalanceSheet(project)
-    assert 0 == bs.build(2021)
+    assert 0 == bs.build(2021).returncode
 
     project = Project(japanese_manifest)
     bs = BalanceSheet(project)
-    assert 0 == bs.build(2021)
+    assert 0 == bs.build(2021).returncode
