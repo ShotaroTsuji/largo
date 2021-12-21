@@ -2,3 +2,6 @@
 assets = "資産"
 liabilities = "負債"
 equity = "純資産"
+
+[command.bs]
+default_options = ['-B', '--no-pager']

@@ -1,7 +1,8 @@
 import toml
 from largo import PathLike
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Optional
 
 
 class Error(Exception):
@@ -39,6 +40,12 @@ class Account:
     equity: str
 
 
+@dataclass
+class Bs:
+    """Settings for bs subcommand"""
+    default_options: list[str] = field(default_factory=list)
+
+
 class Project:
     """
     Represents a ledger project
@@ -62,6 +69,16 @@ class Project:
     @property
     def account(self) -> Account:
         return Account(**self.manifest['account'])
+
+    @property
+    def bs_command(self) -> Optional[Bs]:
+        if not self.manifest.get('command'):
+            return None
+
+        if not self.manifest['command'].get('bs'):
+            return None
+
+        return Bs(**self.manifest['command']['bs'])
 
     def check_structure(self) -> bool:
         """
