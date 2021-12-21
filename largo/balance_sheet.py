@@ -8,10 +8,16 @@ class BalanceSheet:
 
     @property
     def command_arguments(self) -> list[str]:
-        return [self.project.ledger_bin, '-f', '-', 'balance',
-                self.project.account.assets,
-                self.project.account.liabilities,
-                self.project.account.equity]
+        arguments = [self.project.ledger_bin, '-f', '-', 'balance',
+                     self.project.account.assets,
+                     self.project.account.liabilities,
+                     self.project.account.equity]
+
+        settings = self.project.bs_command
+        if settings:
+            arguments.extend(settings.default_options)
+
+        return arguments
 
     def read_book(self, year: int) -> bytes:
         book_path = self.project.book(year)
