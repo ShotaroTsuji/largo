@@ -110,7 +110,7 @@ class Project:
 
         return book_path
 
-    def latest_year(self) -> Optional[int]:
+    def latest_year(self) -> int:
         """Returns the latest year of the books"""
         latest = max(self.list_books(), key=lambda p: p.stem)
         return int(latest.stem)
