@@ -4,10 +4,6 @@ from largo.balance_sheet import BalanceSheet
 import datetime
 
 
-def current_year() -> int:
-    return datetime.date.today().year
-
-
 class BsCommand(Command):
     """
     Show balance sheet
@@ -24,4 +20,4 @@ class BsCommand(Command):
         if year:
             bs.build(int(year))
         else:
-            bs.build(current_year())
+            bs.build(project.latest_year())
