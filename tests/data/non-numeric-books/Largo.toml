@@ -1,0 +1,4 @@
+[account]
+assets = "Assets"
+liabilities = "Liabilities"
+equity = "Equity"

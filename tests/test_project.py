@@ -37,3 +37,12 @@ def test_look_up_missing_book(simple_project):
     project = Project(simple_project)
     with pytest.raises(MissingBookError):
         project.book(1900)
+
+
+def test_get_the_latest_year_of_books(simple_project, non_numeric_books):
+    project = Project(simple_project)
+    assert project.latest_year() == 2021
+
+    project = Project(non_numeric_books)
+    with pytest.raises(Exception):
+        project.latest_year()
