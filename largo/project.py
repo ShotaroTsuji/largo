@@ -2,7 +2,7 @@ import toml
 from largo import PathLike
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, Iterator
 
 
 class Error(Exception):
@@ -63,6 +63,10 @@ class Project:
         return f'Project {{ manifest_path: {self.manifest_path} }}'
 
     @property
+    def book_dir(self) -> Path:
+        return self.project_root / 'book'
+
+    @property
     def ledger_bin(self) -> str:
         return 'ledger'
 
@@ -85,13 +89,12 @@ class Project:
         Check the structure of project files
         """
         missing = []
-        book_dir = self.project_root / 'book'
 
         if not self.manifest_path.exists():
             missing.append(self.manifest_path)
 
-        if not book_dir.exists():
-            missing.append(book_dir)
+        if not self.book_dir.exists():
+            missing.append(self.book_dir)
 
         if missing:
             raise StructureError(missing)
@@ -100,9 +103,18 @@ class Project:
 
     def book(self, year: int) -> Path:
         """Returns the ledger book of the specified year"""
-        book_path = self.project_root / 'book' / f'{year}.ledger'
+        book_path = self.book_dir / f'{year}.ledger'
 
         if not book_path.exists():
             raise MissingBookError(book_path)
 
         return book_path
+
+    def latest_year(self) -> Optional[int]:
+        """Returns the latest year of the books"""
+        latest = max(self.list_books(), key=lambda p: p.stem)
+        return int(latest.stem)
+
+    def list_books(self) -> Iterator[Path]:
+        """Returns the ledger books"""
+        return self.book_dir.glob('*.ledger')
