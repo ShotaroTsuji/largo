@@ -2,3 +2,5 @@
 assets = "Assets"
 liabilities = "Liabilities"
 equity = "Equity"
+expenses = "Expenses"
+income = "Income"

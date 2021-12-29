@@ -16,11 +16,15 @@ def test_account_names(simple_project, japanese_manifest, empty_manifest):
     assert project.account.assets == 'Assets'
     assert project.account.liabilities == 'Liabilities'
     assert project.account.equity == 'Equity'
+    assert project.account.expenses == 'Expenses'
+    assert project.account.income == 'Income'
 
     project = Project(japanese_manifest)
     assert project.account.assets == '資産'
     assert project.account.liabilities == '負債'
     assert project.account.equity == '純資産'
+    assert project.account.expenses == '費用'
+    assert project.account.income == '収益'
 
     project = Project(empty_manifest)
     with pytest.raises(KeyError):
