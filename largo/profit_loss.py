@@ -18,4 +18,8 @@ class ProfitLoss(LedgerInvoke):
                      self.project.account.expenses,
                      self.project.account.income]
 
+        settings = self.project.pl_command
+        if settings:
+            arguments.extend(settings.default_options)
+
         return arguments

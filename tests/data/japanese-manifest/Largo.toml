@@ -7,3 +7,6 @@ income = "収益"
 
 [command.bs]
 default_options = ['-B', '--no-pager']
+
+[command.pl]
+default_options = ['--no-pager']

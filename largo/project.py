@@ -48,6 +48,12 @@ class Bs:
     default_options: list[str] = field(default_factory=list)
 
 
+@dataclass
+class Pl:
+    """Settings for pl subcommand"""
+    default_options: list[str] = field(default_factory=list)
+
+
 class Project:
     """
     Represents a ledger project
@@ -85,6 +91,16 @@ class Project:
             return None
 
         return Bs(**self.manifest['command']['bs'])
+
+    @property
+    def pl_command(self) -> Optional[Pl]:
+        if not self.manifest.get('command'):
+            return None
+
+        if not self.manifest['command'].get('pl'):
+            return None
+
+        return Pl(**self.manifest['command']['pl'])
 
     def check_structure(self) -> bool:
         """

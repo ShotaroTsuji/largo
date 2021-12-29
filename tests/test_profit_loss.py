@@ -10,7 +10,7 @@ def test_pl_command_arguments(simple_project, japanese_manifest):
 
     project = Project(japanese_manifest)
     pl = ProfitLoss(project)
-    want = [project.ledger_bin, '-f', '-', 'balance', '費用', '収益']
+    want = [project.ledger_bin, '-f', '-', 'balance', '費用', '収益', '--no-pager']
     assert want == pl.command_arguments
 
 
