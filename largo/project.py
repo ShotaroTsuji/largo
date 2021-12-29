@@ -38,6 +38,8 @@ class Account:
     assets: str
     liabilities: str
     equity: str
+    expenses: str
+    income: str
 
 
 @dataclass
