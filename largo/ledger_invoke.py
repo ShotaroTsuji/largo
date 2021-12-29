@@ -1,10 +1,17 @@
 from abc import ABCMeta, abstractmethod
+from typing import List
+from largo.project import Project
 import subprocess
 
 
 class LedgerInvoke(metaclass=ABCMeta):
     @abstractmethod
-    def command_arguments(self) -> list[str]:
+    def command_arguments(self) -> List[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def project(self) -> Project:
         pass
 
     def read_book(self, year: int) -> bytes:
@@ -17,4 +24,4 @@ class LedgerInvoke(metaclass=ABCMeta):
 
     def build(self, year: int) -> subprocess.CompletedProcess:
         book = self.read_book(year)
-        return subprocess.run(self.command_arguments, input=book)
+        return subprocess.run(args=self.command_arguments, input=book)
