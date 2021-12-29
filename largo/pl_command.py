@@ -1,5 +1,6 @@
 from cleo import Command
 from largo.project import Project
+from largo.profit_loss import ProfitLoss
 
 
 class PlCommand(Command):
@@ -12,3 +13,5 @@ class PlCommand(Command):
 
     def handle(self):
         project = Project(manifest_path=self.option('manifest-path'))
+        pl = ProfitLoss(project)
+        pl.build(project.latest_year())
