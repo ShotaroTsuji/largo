@@ -13,6 +13,7 @@ cleo = "^0.8.1"
 pytest-datadir = "^1.3.1"
 toml = "^0.10.2"
 mypy = "^0.920"
+pyright = "^0.0.13"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -20,6 +21,8 @@ pytest = "^5.2"
 [[tool.mypy.overrides]]
 module = ["cleo"]
 ignore_missing_imports = true
+
+[tool.pyright]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
