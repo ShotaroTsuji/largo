@@ -5,6 +5,7 @@ import subprocess
 
 
 class LedgerInvoke(metaclass=ABCMeta):
+    @property
     @abstractmethod
     def command_arguments(self) -> List[str]:
         pass
