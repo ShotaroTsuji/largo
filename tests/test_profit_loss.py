@@ -1,11 +1,20 @@
 from largo.profit_loss import ProfitLoss
 from largo.project import Project
+from largo.pl_command import Month
 
 
 def test_pl_command_arguments(simple_project, japanese_manifest):
     project = Project(simple_project)
     pl = ProfitLoss(project)
     want = [project.ledger_bin, '-f', '-', 'balance', 'Expenses', 'Income']
+    assert want == pl.command_arguments
+
+    pl = ProfitLoss(project, month=Month('jan'))
+    want = [project.ledger_bin, '-f', '-', 'balance', '-b', 'jan', '-e', 'feb', 'Expenses', 'Income']
+    assert want == pl.command_arguments
+
+    pl = ProfitLoss(project, month=Month('dec'))
+    want = [project.ledger_bin, '-f', '-', 'balance', '-b', 'dec', 'Expenses', 'Income']
     assert want == pl.command_arguments
 
     project = Project(japanese_manifest)
