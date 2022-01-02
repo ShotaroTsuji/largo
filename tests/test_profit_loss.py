@@ -1,7 +1,6 @@
 from largo.date_range import DateRange
 from largo.profit_loss import ProfitLoss
 from largo.project import Project
-from largo.pl_command import Month
 
 
 def test_pl_command_arguments(simple_project, japanese_manifest):

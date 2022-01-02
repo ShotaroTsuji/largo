@@ -21,11 +21,3 @@ class PlCommand(Command):
 
         pl = ProfitLoss(project, date_range=date_range)
         pl.build(year)
-
-    @property
-    def month(self):
-        month = self.argument('month')
-        if month:
-            return Month(month)
-        else:
-            return None
