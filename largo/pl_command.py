@@ -1,5 +1,6 @@
 from cleo import Command
 from largo import Month
+from largo.date_range import DateRange
 from largo.project import Project
 from largo.profit_loss import ProfitLoss
 
@@ -15,8 +16,11 @@ class PlCommand(Command):
 
     def handle(self):
         project = Project(manifest_path=self.option('manifest-path'))
-        pl = ProfitLoss(project, month=self.month)
-        pl.build(project.latest_year())
+        year = project.latest_year()
+        date_range = DateRange(year, self.argument('month'))
+
+        pl = ProfitLoss(project, date_range=date_range)
+        pl.build(year)
 
     @property
     def month(self):

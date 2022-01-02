@@ -1,3 +1,4 @@
+from largo.date_range import DateRange
 from largo.project import Project
 from largo.ledger_invoke import LedgerInvoke
 from typing import List
@@ -5,9 +6,9 @@ import subprocess
 
 
 class ProfitLoss(LedgerInvoke):
-    def __init__(self, project: Project, month = None):
+    def __init__(self, project: Project, date_range: DateRange = None):
         self._project = project
-        self._month = month
+        self._date_range = date_range
 
     @property
     def project(self) -> Project:
@@ -21,11 +22,8 @@ class ProfitLoss(LedgerInvoke):
     def command_arguments(self) -> List[str]:
         arguments = [self.project.ledger_bin, '-f', '-', 'balance']
 
-        if self._month:
-            begin, end = self._month.to_range_str()
-            arguments.extend(['-b', begin])
-            if end:
-                arguments.extend(['-e', end])
+        if self._date_range:
+            arguments.extend(['-b', str(self._date_range.begin), '-e', str(self._date_range.end)])
 
         arguments.extend(self.accounts)
 
