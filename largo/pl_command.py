@@ -34,6 +34,8 @@ class PlCommand(Command):
 
         date_argument = self.argument('date-argument')
 
+        year = project.latest_year()
+        month = None
         if date_argument:
             arg_type, arg = parse_argument(date_argument)
             if arg_type is ArgumentType.YEAR:
