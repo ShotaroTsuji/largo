@@ -1,5 +1,5 @@
 from cleo import Command
-from largo.date_range import DateRange
+from largo.date_range import month_to_abbrev, DateRange
 from largo.project import Project
 from largo.profit_loss import ProfitLoss
 from typing import Any, Tuple
@@ -10,13 +10,19 @@ import re
 class ArgumentType(enum.Enum):
     YEAR = enum.auto()
     MONTH = enum.auto()
+    YEAR_MONTH = enum.auto()
 
 
 def parse_argument(s: str) -> Tuple[ArgumentType, Any]:
-    if re.match(r"\d+", s):
+    if re.match(r"\d+$", s):
         return (ArgumentType.YEAR, int(s))
-    if re.match(r"[a-z]+", s):
+    if re.match(r"[a-z]+$", s):
         return (ArgumentType.MONTH, s)
+    m = re.match(r"(\d+)-(\d\d)$", s)
+    if m:
+        year = int(m.group(1))
+        month = month_to_abbrev(int(m.group(2)))
+        return (ArgumentType.YEAR_MONTH, (year, month))
     raise Exception(f'unsupported type of argument {s}')
 
 

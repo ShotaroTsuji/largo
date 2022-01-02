@@ -9,3 +9,7 @@ def test_parse_argument():
     want = (ArgumentType.MONTH, 'jan')
     got = parse_argument('jan')
     assert want == got
+
+    want = (ArgumentType.YEAR_MONTH, (2021, 'jan'))
+    got = parse_argument('2021-01')
+    assert want == got
