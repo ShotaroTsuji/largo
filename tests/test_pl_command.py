@@ -1,4 +1,4 @@
-from largo.pl_command import Month
+from largo import Month
 
 
 def test_parse_month_string():
