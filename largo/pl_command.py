@@ -2,6 +2,22 @@ from cleo import Command
 from largo.date_range import DateRange
 from largo.project import Project
 from largo.profit_loss import ProfitLoss
+from typing import Any, Tuple
+import enum
+import re
+
+
+class ArgumentType(enum.Enum):
+    YEAR = enum.auto()
+    MONTH = enum.auto()
+
+
+def parse_argument(s: str) -> Tuple[ArgumentType, Any]:
+    if re.match(r"\d+", s):
+        return (ArgumentType.YEAR, int(s))
+    if re.match(r"[a-z]+", s):
+        return (ArgumentType.MONTH, s)
+    raise Exception(f'unsupported type of argument {s}')
 
 
 class PlCommand(Command):
