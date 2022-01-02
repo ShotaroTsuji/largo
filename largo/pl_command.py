@@ -50,6 +50,8 @@ class PlCommand(Command):
             elif arg_type is ArgumentType.MONTH:
                 year = project.latest_year()
                 month = arg
+            elif arg_type is ArgumentType.YEAR_MONTH:
+                year, month = arg
         else:
             year = project.latest_year()
             month = None
