@@ -1,5 +1,4 @@
 from cleo import Command
-from largo import Month
 from largo.date_range import DateRange
 from largo.project import Project
 from largo.profit_loss import ProfitLoss
