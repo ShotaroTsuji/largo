@@ -2,7 +2,7 @@ from cleo import Command
 from largo.date_range import month_to_abbrev, DateRange
 from largo.project import Project
 from largo.profit_loss import ProfitLoss
-from typing import Any, Tuple
+from typing import Any, Tuple, cast
 import enum
 import re
 
@@ -36,9 +36,9 @@ class PlCommand(Command):
     """
 
     def handle(self):
-        project = Project(manifest_path=self.option('manifest-path'))
+        project = Project(manifest_path=cast(str, self.option('manifest-path')))
 
-        date_argument = self.argument('date-argument')
+        date_argument = cast(str, self.argument('date-argument'))
 
         year = project.latest_year()
         month = None
