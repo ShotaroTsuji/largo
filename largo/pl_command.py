@@ -2,7 +2,7 @@ from cleo import Command
 from largo.date_range import month_to_abbrev, DateRange
 from largo.project import Project
 from largo.profit_loss import ProfitLoss
-from typing import Any, Tuple, cast
+from typing import Any, Optional, Tuple, cast
 import enum
 import re
 
@@ -23,7 +23,24 @@ def parse_argument(s: str) -> Tuple[ArgumentType, Any]:
         year = int(m.group(1))
         month = month_to_abbrev(int(m.group(2)))
         return (ArgumentType.YEAR_MONTH, (year, month))
-    raise Exception(f'unsupported type of argument {s}')
+    else:
+        raise Exception(f'unsupported type of argument {s}')
+
+
+def date_argument_to_year_month(date_argument: str, *, default_year: int) -> Tuple[int, Optional[int]]:
+        if date_argument:
+            arg_type, arg = parse_argument(date_argument)
+            if arg_type is ArgumentType.YEAR:
+                return (arg, None)
+            elif arg_type is ArgumentType.MONTH:
+                return (default_year, arg)
+            elif arg_type is ArgumentType.YEAR_MONTH:
+                year, month = arg
+                return (year, cast(int, month))
+            else:
+                raise ValueError('Unreachable!')
+        else:
+            return (default_year, None)
 
 
 class PlCommand(Command):
@@ -40,21 +57,7 @@ class PlCommand(Command):
 
         date_argument = cast(str, self.argument('date-argument'))
 
-        year = project.latest_year()
-        month = None
-        if date_argument:
-            arg_type, arg = parse_argument(date_argument)
-            if arg_type is ArgumentType.YEAR:
-                year = arg
-                month = None
-            elif arg_type is ArgumentType.MONTH:
-                year = project.latest_year()
-                month = arg
-            elif arg_type is ArgumentType.YEAR_MONTH:
-                year, month = arg
-        else:
-            year = project.latest_year()
-            month = None
+        year, month = date_argument_to_year_month(date_argument, default_year=project.latest_year())
 
         date_range = DateRange(year, month)
 
