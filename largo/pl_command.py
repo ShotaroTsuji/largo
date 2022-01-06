@@ -18,8 +18,7 @@ def parse_argument(s: str) -> Tuple[ArgumentType, Any]:
         return (ArgumentType.YEAR, int(s))
     if re.match(r"[a-z]+$", s):
         return (ArgumentType.MONTH, s)
-    m = re.match(r"(\d+)-(\d\d)$", s)
-    if m:
+    if m := re.match(r"(\d+)-(\d\d)$", s):
         year = int(m.group(1))
         month = month_to_abbrev(int(m.group(2)))
         return (ArgumentType.YEAR_MONTH, (year, month))
