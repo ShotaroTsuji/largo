@@ -6,7 +6,7 @@ import subprocess
 
 
 class ProfitLoss(LedgerInvoke):
-    def __init__(self, project: Project, date_range: DateRange = None):
+    def __init__(self, project: Project, date_range: DateRange):
         self._project = project
         self._date_range = date_range
 
@@ -17,6 +17,10 @@ class ProfitLoss(LedgerInvoke):
     @property
     def accounts(self) -> list[str]:
         return [self.project.account.expenses, self.project.account.income]
+
+    @property
+    def year(self) -> int:
+        return self._date_range.year
 
     @property
     def command_arguments(self) -> List[str]:

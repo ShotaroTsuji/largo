@@ -15,14 +15,19 @@ class LedgerInvoke(metaclass=ABCMeta):
     def project(self) -> Project:
         pass
 
-    def read_book(self, year: int) -> bytes:
-        book_path = self.project.book(year)
+    @property
+    @abstractmethod
+    def year(self) -> int:
+        pass
+
+    def read_book(self) -> bytes:
+        book_path = self.project.book(self.year)
 
         with open(book_path, mode='rb') as book_file:
             book = book_file.read()
 
         return book
 
-    def build(self, year: int) -> subprocess.CompletedProcess:
-        book = self.read_book(year)
+    def build(self) -> subprocess.CompletedProcess:
+        book = self.read_book()
         return subprocess.run(args=self.command_arguments, input=book)
