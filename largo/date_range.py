@@ -67,6 +67,10 @@ class DateRange:
     def end(self) -> datetime.date:
         return self._end
 
+    @property
+    def year(self) -> int:
+        return self._begin.year
+
 
 @define
 class Year:
