@@ -22,4 +22,4 @@ class PlCommand(Command):
         date_range = date_argument_to_date_range(date_argument, default_year=project.latest_year())
 
         pl = ProfitLoss(project, date_range=date_range)
-        pl.build(date_range.year)
+        pl.build()
