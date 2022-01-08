@@ -1,26 +1,44 @@
-import subprocess
 from largo.project import Project
 from largo.ledger_invoke import LedgerInvoke
+from largo.date_range import DateRange
 from typing import List
+import datetime
 
 
 class BalanceSheet(LedgerInvoke):
-    def __init__(self, project: Project):
+    def __init__(self, project: Project, date_range: DateRange):
         self._project = project
+        self._date_range = date_range
 
     @property
     def project(self) -> Project:
         return self._project
 
     @property
-    def command_arguments(self) -> List[str]:
-        arguments = [self.project.ledger_bin, '-f', '-', 'balance',
-                     self.project.account.assets,
-                     self.project.account.liabilities,
-                     self.project.account.equity]
+    def accounts(self) -> List[str]:
+        return [self.project.account.assets,
+                self.project.account.liabilities,
+                self.project.account.equity]
 
-        settings = self.project.bs_command
-        if settings:
-            arguments.extend(settings.default_options)
+    @property
+    def year(self) -> int:
+        return self._date_range.year
 
-        return arguments
+    @property
+    def ledger_subcommand(self) -> str:
+        return 'balance'
+
+    @property
+    def period_begin(self) -> datetime.date:
+        return self._date_range.begin
+
+    @property
+    def period_end(self) -> datetime.date:
+        return self._date_range.end
+
+    @property
+    def default_options(self) -> List[str]:
+        if settings := self.project.bs_command:
+            return settings.default_options
+        else:
+            return []
