@@ -113,15 +113,15 @@ class YearMonth:
     month: int = field(converter = month_no_from_str_or_int)
 
 
-def parse_argument(s: str) -> Year | Month | YearMonth:
+def parse_date_argument(s: str) -> Year | Month | YearMonth:
     """
     Parses a command line argument of year or month.
 
-    >>> parse_argument('2022')
+    >>> parse_date_argument('2022')
     Year(year=2022)
-    >>> parse_argument('may')
+    >>> parse_date_argument('may')
     Month(month=5)
-    >>> parse_argument('2021-10')
+    >>> parse_date_argument('2021-10')
     YearMonth(year=2021, month=10)
     """
     if re.match(r"^\d+$", s):
@@ -134,3 +134,45 @@ def parse_argument(s: str) -> Year | Month | YearMonth:
         return YearMonth(year, typing.cast(int, month))
     else:
         raise ValueError(f'unsupported type of argument: {s}')
+
+
+def date_argument_to_date_range(s: str | None, *, default_year: int) -> DateRange:
+    """
+    Convert a date argument into a `DateRange` object.
+
+    >>> period = date_argument_to_date_range(None, default_year = 2021)
+    >>> period.begin
+    datetime.date(2021, 1, 1)
+    >>> period.end
+    datetime.date(2022, 1, 1)
+
+    >>> period = date_argument_to_date_range('1990', default_year = 2021)
+    >>> period.begin
+    datetime.date(1990, 1, 1)
+    >>> period.end
+    datetime.date(1991, 1, 1)
+
+    >>> period = date_argument_to_date_range('mar', default_year = 2021)
+    >>> period.begin
+    datetime.date(2021, 3, 1)
+    >>> period.end
+    datetime.date(2021, 4, 1)
+
+    >>> period = date_argument_to_date_range('2020-12', default_year = 2021)
+    >>> period.begin
+    datetime.date(2020, 12, 1)
+    >>> period.end
+    datetime.date(2021, 1, 1)
+    """
+    if s:
+        match parse_date_argument(s):
+            case Year(year):
+                return DateRange(year)
+            case Month(month):
+                return DateRange(default_year, month)
+            case YearMonth(year, month):
+                return DateRange(year, month)
+            case _:
+                raise ValueError('unsupported input')
+    else:
+        return DateRange(default_year)
