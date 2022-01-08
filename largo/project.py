@@ -81,7 +81,10 @@ class Project:
 
     @property
     def account(self) -> Account:
-        return Account(**self.manifest['account'])
+        try:
+            return Account(**self.manifest['account'])
+        except TypeError as exc:
+            raise ValueError('Some fields in `[account]` of Largo.toml are missing') from exc
 
     @property
     def bs_command(self) -> Optional[Bs]:
