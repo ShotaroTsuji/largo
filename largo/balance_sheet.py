@@ -5,12 +5,17 @@ from typing import List
 
 
 class BalanceSheet(LedgerInvoke):
-    def __init__(self, project: Project):
+    def __init__(self, project: Project, year: int):
         self._project = project
+        self._year = year
 
     @property
     def project(self) -> Project:
         return self._project
+
+    @property
+    def year(self) -> int:
+        return self._year
 
     @property
     def command_arguments(self) -> List[str]:

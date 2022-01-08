@@ -15,9 +15,12 @@ class BsCommand(Command):
 
     def handle(self):
         project = Project(manifest_path=self.option('manifest-path'))
-        bs = BalanceSheet(project)
+
         year = self.argument('year')
         if year:
-            bs.build(int(year))
+            year = int(year)
         else:
-            bs.build(project.latest_year())
+            year = project.latest_year()
+
+        bs = BalanceSheet(project, year)
+        bs.build()
