@@ -9,7 +9,8 @@ def test_cf_command_arguments(japanese_manifest):
 
     want = [project.ledger_bin, '-f', '-',
             'balance', '-b', '2021-01-01', '-e', '2022-01-01',
-            '資産:現金', '資産:普通預金']
+            '資産:現金', '資産:普通預金',
+            '--no-pager']
     assert want == cf.command_arguments
 
 def test_build_cash_flow(japanese_manifest):

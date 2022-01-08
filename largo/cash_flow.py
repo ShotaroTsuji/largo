@@ -36,4 +36,7 @@ class CashFlow(LedgerInvoke):
 
     @property
     def default_options(self) -> List[str]:
-        return []
+        if settings := self.project.cf_command:
+            return settings.default_options
+        else:
+            return []
