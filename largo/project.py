@@ -2,7 +2,7 @@ import toml
 from largo import PathLike
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional, Iterator
+from typing import List, Optional, Iterator
 
 
 class Error(Exception):
@@ -40,6 +40,7 @@ class Account:
     equity: str
     expenses: str
     income: str
+    cash: List[str]
 
 
 @dataclass

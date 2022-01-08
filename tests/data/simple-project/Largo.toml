@@ -4,3 +4,4 @@ liabilities = "Liabilities"
 equity = "Equity"
 expenses = "Expenses"
 income = "Income"
+cash = ["Assets:Cash"]
