@@ -2,7 +2,7 @@ import toml
 from largo import PathLike
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional, Iterator
+from typing import List, Optional, Iterator
 
 
 class Error(Exception):
@@ -40,6 +40,7 @@ class Account:
     equity: str
     expenses: str
     income: str
+    cash: List[str]
 
 
 @dataclass
@@ -51,6 +52,12 @@ class Bs:
 @dataclass
 class Pl:
     """Settings for pl subcommand"""
+    default_options: list[str] = field(default_factory=list)
+
+
+@dataclass
+class Cf:
+    """Settings for cf subcommand"""
     default_options: list[str] = field(default_factory=list)
 
 
@@ -80,27 +87,35 @@ class Project:
 
     @property
     def account(self) -> Account:
-        return Account(**self.manifest['account'])
+        try:
+            return Account(**self.manifest['account'])
+        except TypeError as exc:
+            raise ValueError('Some fields in `[account]` of Largo.toml are missing') from exc
+
+    @property
+    def command(self) -> Optional[dict]:
+        return self.manifest.get('command')
 
     @property
     def bs_command(self) -> Optional[Bs]:
-        if not self.manifest.get('command'):
-            return None
-
-        if not self.manifest['command'].get('bs'):
-            return None
-
-        return Bs(**self.manifest['command']['bs'])
+        if command := self.command:
+            if bs := command.get('bs'):
+                return Bs(**bs)
+        return None
 
     @property
     def pl_command(self) -> Optional[Pl]:
-        if not self.manifest.get('command'):
-            return None
+        if command := self.command:
+            if pl := command.get('pl'):
+                return Pl(**pl)
+        return None
 
-        if not self.manifest['command'].get('pl'):
-            return None
-
-        return Pl(**self.manifest['command']['pl'])
+    @property
+    def cf_command(self) -> Optional[Cf]:
+        if command := self.command:
+            if cf := command.get('cf'):
+                return Cf(**cf)
+        return None
 
     def check_structure(self) -> bool:
         """

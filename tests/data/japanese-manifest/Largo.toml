@@ -4,9 +4,13 @@ liabilities = "負債"
 equity = "純資産"
 expenses = "費用"
 income = "収益"
+cash = ["資産:現金", "資産:普通預金"]
 
 [command.bs]
 default_options = ['-B', '--no-pager']
 
 [command.pl]
+default_options = ['--no-pager']
+
+[command.cf]
 default_options = ['--no-pager']

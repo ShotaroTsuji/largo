@@ -18,6 +18,7 @@ def test_account_names(simple_project, japanese_manifest, empty_manifest):
     assert project.account.equity == 'Equity'
     assert project.account.expenses == 'Expenses'
     assert project.account.income == 'Income'
+    assert project.account.cash == ['Assets:Cash']
 
     project = Project(japanese_manifest)
     assert project.account.assets == '資産'
@@ -25,6 +26,7 @@ def test_account_names(simple_project, japanese_manifest, empty_manifest):
     assert project.account.equity == '純資産'
     assert project.account.expenses == '費用'
     assert project.account.income == '収益'
+    assert project.account.cash == ['資産:現金', '資産:普通預金']
 
     project = Project(empty_manifest)
     with pytest.raises(KeyError):
