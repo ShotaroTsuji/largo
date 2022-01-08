@@ -26,6 +26,21 @@ def month_from_abbrev(s: str) -> int:
     return month_abbrevs().index(s) + 1
 
 class DateRange:
+    """
+    Represents a year/month period range.
+
+    >>> period = DateRange(2021)
+    >>> period.begin
+    datetime.date(2021, 1, 1)
+    >>> period.end
+    datetime.date(2022, 1, 1)
+
+    >>> period = DateRange(2021, 10)
+    >>> period.begin
+    datetime.date(2021, 10, 1)
+    >>> period.end
+    datetime.date(2021, 11, 1)
+    """
     def __init__(self, year, month=None) -> None:
         if month:
             if type(month) is str:
@@ -52,6 +67,7 @@ class DateRange:
 class Year:
     """
     A class represents a year.
+
     >>> Year(2021)
     Year(year=2021)
     """
@@ -62,6 +78,7 @@ class Year:
 class Month:
     """
     A class represents a month.
+
     >>> Month('dec')
     Month(month=12)
     """
@@ -111,4 +128,4 @@ def parse_argument(s: str) -> Year | Month | YearMonth:
         month = month_to_abbrev(int(m.group(2)))
         return YearMonth(year, typing.cast(int, month))
     else:
-        raise Exception(f'unsupported type of argument {s}')
+        raise ValueError(f'unsupported type of argument: {s}')
