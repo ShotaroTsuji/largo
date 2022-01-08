@@ -45,11 +45,16 @@ class DateRange:
         if month:
             if type(month) is str:
                 month = month_from_abbrev(month)
-                self._begin = datetime.date(year, month, 1)
-                if month == 12:
-                    self._end = datetime.date(year + 1, 1, 1)
-                else:
-                    self._end = datetime.date(year, month + 1, 1)
+            elif type(month) is int:
+                pass
+            else:
+                raise TypeError('`month` must be str or int')
+
+            self._begin = datetime.date(year, month, 1)
+            if month == 12:
+                self._end = datetime.date(year + 1, 1, 1)
+            else:
+                self._end = datetime.date(year, month + 1, 1)
         else:
             self._begin = datetime.date(year, 1, 1)
             self._end = datetime.date(year + 1, 1, 1)
