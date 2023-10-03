@@ -1,17 +1,28 @@
-from cleo import Command
+from cleo.commands.command import Command
+from cleo.helpers import argument, option
 from largo.project import Project
 from largo.balance_sheet import BalanceSheet
-from largo.date_range import DateRange, date_argument_to_date_range
+from largo.date_range import date_argument_to_date_range
 
 
 class BsCommand(Command):
-    """
-    Show balance sheet
-
-    bs
-        {date-argument? : The year/month of the balance sheet}
-        {--manifest-path=Largo.toml : The path to a manifest file}
-    """
+    name = "bs"
+    description = "Show balance sheet"
+    arguments = [
+        argument(
+            name="date-argument",
+            description="The year/month of the balance sheet",
+            optional=True,
+        ),
+    ]
+    options = [
+        option(
+            long_name="manifest-path",
+            description="The path to a manifest file",
+            flag=False,
+            default="Largo.toml"
+        )
+    ]
 
     def handle(self):
         project = Project(manifest_path=self.option('manifest-path'))

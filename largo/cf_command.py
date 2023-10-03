@@ -1,4 +1,5 @@
-from cleo import Command
+from cleo.commands.command import Command
+from cleo.helpers import argument, option
 from largo.date_range import date_argument_to_date_range
 from largo.project import Project
 from largo.cash_flow import CashFlow
@@ -13,6 +14,22 @@ class CfCommand(Command):
         {--manifest-path=Largo.toml : The path to a manifest file}
         {date-argument? : Year/month to be shown}
     """
+    name="cf"
+    arguments=[
+        argument(
+            name="date-argument",
+            description="Year/month to be shown",
+            optional=True,
+        )
+    ]
+    options=[
+        option(
+            long_name="manifest-path",
+            description="The path to a manifest file",
+            flag=False,
+            default="Largo.toml",
+        )
+    ]
 
     def handle(self):
         project = Project(manifest_path=cast(str, self.option('manifest-path')))
